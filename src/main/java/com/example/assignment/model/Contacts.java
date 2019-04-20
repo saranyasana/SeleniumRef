@@ -2,6 +2,8 @@ package com.example.assignment.model;
 
 import org.springframework.data.annotation.Id;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 
@@ -13,24 +15,37 @@ import com.fasterxml.jackson.annotation.JsonIgnoreType;
 @Document
 @JsonIgnoreType()
 public class Contacts {
-
-  	@Id
+	
+	@Id 
+	private String id;
+	@Valid
 	String name;
 	@Valid
 	int phoneNumber;
 	@Valid
 	String email;
 
-	public Contacts(@Valid String name, @Valid int phoneNumber, @Valid String email) {
-		
-		
+	@Valid
+	List<Device> device;
+
+	public @Valid List<Device> getDevice() {
+		return device;
+	}
+
+	public void setDevice(@Valid List<Device> device) {
+		this.device = device;
+	}
+
+	public Contacts(@Valid String name, @Valid int phoneNumber, @Valid String email,@Valid List<Device> device) {
+
+		this.device=device;
 		this.name = name;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 	}
 
 	public Contacts() {}
-	
+
 	public String getName() {
 		return name;
 	}

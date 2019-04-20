@@ -3,6 +3,8 @@ package com.example.assignment.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +28,8 @@ public class ContactService {
 		return ContactsList;
 	}
 
-	public String updateContacts(Contacts contacts) {
-		contactsRepository.save(contacts);
+	public String updateContacts(@Valid Contacts contact) {
+		contactsRepository.save(contact);
 		return "Contacts Sucessfully updated";
 	}
 
@@ -43,6 +45,11 @@ public class ContactService {
 	
 	public Optional<Contacts> getContactByName(String name) {
 		Optional<Contacts>contact= contactsRepository.findByName(name);
+		return contact;
+	}
+	
+	public Contacts getContactByDevice(String name) {
+		Contacts contact= contactsRepository.findByDevice(name);
 		return contact;
 	}
 
