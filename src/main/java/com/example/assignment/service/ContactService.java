@@ -48,8 +48,8 @@ public class ContactService {
 		return contact;
 	}
 	
-	public Contacts getContactByDevice(String name) {
-		Contacts contact= contactsRepository.findByDevice(name);
+	public Contacts getContactByDevice(String device,String name) {
+		Contacts contact= contactsRepository.findByDevice(name,device);
 		return contact;
 	}
 

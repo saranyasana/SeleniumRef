@@ -16,8 +16,8 @@ public interface ContactRepo extends MongoRepository<Contacts, String>{
 
 	
 	
-	@Query("{'Device.name': ?0}")
-	public  Contacts findByDevice(String name);
+	@Query("{'$and':[{'name':?0},{'Device.name': ?1}]}")
+	public  Contacts findByDevice(String name,String device);
 
 	
 }

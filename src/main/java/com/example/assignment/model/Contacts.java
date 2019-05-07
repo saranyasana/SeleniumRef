@@ -1,6 +1,7 @@
 package com.example.assignment.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 
 import java.util.List;
 
@@ -12,16 +13,23 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonIgnoreType;
 
 
+
 @Document
 @JsonIgnoreType()
 public class Contacts {
 	
 	@Id 
 	private String id;
+	
+	@Version
+	Integer version;
+	
 	@Valid
 	String name;
+	
 	@Valid
 	int phoneNumber;
+	
 	@Valid
 	String email;
 
@@ -63,6 +71,14 @@ public class Contacts {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 
 

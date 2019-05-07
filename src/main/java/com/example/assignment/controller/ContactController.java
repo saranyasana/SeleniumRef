@@ -6,6 +6,8 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,19 +42,25 @@ public class ContactController {
 	}
 
 	@GetMapping("/user/{name}")
-	public Optional<Contacts> getContactByName(@PathVariable String name) {
+	public Optional<Contacts> getContactByName(@PathVariable("name") String name) {
 		return contactService.getContactByName(name);
 	}
-
-	@GetMapping("/{device}")
-	public Contacts getContactByDevice(@PathVariable String device) {
-		return contactsRepository.findByDevice(device);
+	
+	@Cacheable
+	@GetMapping("/{name}/{device}")
+	public Contacts getContactByDevice(@PathVariable("name") String name,@PathVariable String device) {
+		return contactsRepository.findByDevice(name,device);
 	}
 
+	@CacheEvict(allEntries=true)
+	@GetMapping("syncContacts/{name}/{device}")
+	public Contacts getContactByDeviceSync(@PathVariable("name") String name,@PathVariable String device) {
+		return contactsRepository.findByDevice(name,device);
+	}
 
-	@PutMapping("updateByDeviceName/{device}") 
-	public String modifyByDeviceName(@PathVariable("device") String device, @Valid @RequestBody Contacts contact)
-	{ Contacts temp = contactsRepository.findByDevice(device);
+	@PutMapping("updateByDeviceName/{name}/{device}") 
+	public String modifyByDeviceName(@PathVariable("name") String name,@PathVariable("device") String device, @Valid @RequestBody Contacts contact)
+	{ Contacts temp = contactsRepository.findByDevice(name,device);
 	if(temp != null) {
 		temp.setEmail(contact.getEmail());
 		temp.setName(contact.getName());
